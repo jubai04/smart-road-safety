@@ -66,7 +66,10 @@ const helpTopics = [
   },
 ];
 
-const REPORTS_API_URL = "http://localhost:4000/api/reports";
+const REPORTS_API_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:4000/api/reports"
+    : "/api/reports";
 
 const AppContext = createContext(null);
 
