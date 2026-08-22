@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from "react-leaflet";
 import L from "leaflet";
@@ -81,15 +80,6 @@ export default function Dashboard() {
     ttc,
     mapPosition,
   } = useApp();
-
-  const { hash } = useLocation();
-
-  useEffect(() => {
-    if (hash) {
-      const el = document.getElementById(hash.slice(1));
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [hash]);
 
   return (
     <section className="dashboard-section" id="dashboard">

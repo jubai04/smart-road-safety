@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
 import Navbar from "./components/Navbar";
 import AuthModal from "./components/AuthModal";
@@ -11,6 +12,29 @@ import Help from "./pages/Help";
 import "./App.css";
 
 export default function App() {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) {
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    const scroll = () => {
+      const element = document.getElementById(hash.slice(1));
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        return true;
+      }
+      return false;
+    };
+
+    if (!scroll()) {
+      const timer = setTimeout(scroll, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [pathname, hash]);
+
   return (
     <AppProvider>
       <div className="app">
