@@ -1,4 +1,6 @@
 import { randomUUID } from "node:crypto";
+import { kv } from "@vercel/kv";
+import { put } from "@vercel/blob";
 
 export const config = {
   api: { bodyParser: false },
@@ -57,8 +59,6 @@ function bufferIndexOf(buf, search, offset) {
   return -1;
 }
 
-const inMemoryReports = [];
-
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -69,22 +69,36 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
-    const formatted = inMemoryReports
-      .slice()
-      .reverse()
-      .map((report) => ({
-        id: report.id,
-        reference: `SRS-${report.id.slice(0, 8).toUpperCase()}`,
-        issueType: report.issueType,
-        location: report.location,
-        description: report.description,
-        latitude: report.latitude,
-        longitude: report.longitude,
-        photoUrl: report.photoUrl || null,
-        createdAt: report.createdAt,
-      }));
+    try {
+      const reportIds = await kv.zrange("reports", 0, -1, { rev: true });
 
-    return res.status(200).json({ reports: formatted });
+      if (reportIds.length === 0) {
+        return res.status(200).json({ reports: [] });
+      }
+
+      const reports = [];
+      for (const id of reportIds) {
+        const report = await kv.hgetall(`report:${id}`);
+        if (report?.id) {
+          reports.push({
+            id: report.id,
+            reference: `SRS-${report.id.slice(0, 8).toUpperCase()}`,
+            issueType: report.issueType,
+            location: report.location,
+            description: report.description,
+            latitude: report.latitude ? Number(report.latitude) : null,
+            longitude: report.longitude ? Number(report.longitude) : null,
+            photoUrl: report.photoUrl || null,
+            createdAt: report.createdAt,
+          });
+        }
+      }
+
+      return res.status(200).json({ reports });
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+      return res.status(500).json({ message: "Failed to fetch reports." });
+    }
   }
 
   if (req.method !== "POST") {
@@ -141,18 +155,29 @@ export default async function handler(req, res) {
     const id = randomUUID();
     const createdAt = new Date().toISOString();
 
-    inMemoryReports.push({
+    let photoUrl = null;
+    const photoPart = parts.find((p) => p.name === "photo" && p.filename);
+    if (photoPart) {
+      const extension = photoPart.filename.split(".").pop() || "jpg";
+      const blob = await put(`reports/${id}.${extension}`, photoPart.data, {
+        access: "public",
+        contentType: photoPart.contentType || "image/jpeg",
+      });
+      photoUrl = blob.url;
+    }
+
+    await kv.hset(`report:${id}`, {
       id,
       issueType,
       location,
       description,
-      latitude: parsedLatitude,
-      longitude: parsedLongitude,
-      photoUrl: null,
+      latitude: parsedLatitude !== null ? String(parsedLatitude) : "",
+      longitude: parsedLongitude !== null ? String(parsedLongitude) : "",
+      photoUrl: photoUrl || "",
       createdAt,
     });
 
-    if (inMemoryReports.length > 500) inMemoryReports.splice(0, 100);
+    await kv.zadd("reports", { score: Date.now(), member: id });
 
     return res.status(201).json({
       reference: `SRS-${id.slice(0, 8).toUpperCase()}`,
