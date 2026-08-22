@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@upstash/redis": "^1.38.2",
     "@vercel/blob": "^2.8.0",
     "firebase": "^12.18.0",
+    "ioredis": "^6.0.0",
     "leaflet": "^1.9.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { Redis } from "@upstash/redis";
+import Redis from "ioredis";
 import { put } from "@vercel/blob";
 
-const redis = new Redis({ url: process.env.REDIS_URL });
+const redis = new Redis(process.env.REDIS_URL);
 
 export const config = {
   api: { bodyParser: false },
@@ -72,7 +72,7 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     try {
-      const reportIds = await redis.zrange("reports", 0, -1, { rev: true });
+      const reportIds = await redis.zrange("reports", 0, -1, "REV");
 
       if (reportIds.length === 0) {
         return res.status(200).json({ reports: [] });
@@ -179,7 +179,7 @@ export default async function handler(req, res) {
       createdAt,
     });
 
-    await redis.zadd("reports", { score: Date.now(), member: id });
+    await redis.zadd("reports", Date.now(), id);
 
     return res.status(201).json({
       reference: `SRS-${id.slice(0, 8).toUpperCase()}`,
