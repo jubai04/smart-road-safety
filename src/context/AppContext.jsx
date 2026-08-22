@@ -66,10 +66,7 @@ const helpTopics = [
   },
 ];
 
-const REPORTS_API_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:4000/api/reports"
-    : "/api/reports";
+const REPORTS_API_URL = import.meta.env.VITE_REPORTS_API_URL || "/api/reports";
 
 const AppContext = createContext(null);
 
@@ -493,13 +490,13 @@ export function AppProvider({ children }) {
         out center tags;
       `;
 
-      const isLocal =
-        window.location.hostname === "localhost";
-      const overpassUrl = isLocal
-        ? "https://overpass-api.de/api/interpreter"
-        : "/api/overpass";
+      const overpassUrl =
+        import.meta.env.VITE_OVERPASS_URL || "/api/overpass";
 
-      const fetchOptions = isLocal
+      const isDirectOverpass =
+        overpassUrl.startsWith("http");
+
+      const fetchOptions = isDirectOverpass
         ? {
             method: "POST",
             headers: {
