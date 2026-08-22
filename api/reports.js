@@ -61,11 +61,30 @@ const inMemoryReports = [];
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
     return res.status(200).end();
+  }
+
+  if (req.method === "GET") {
+    const formatted = inMemoryReports
+      .slice()
+      .reverse()
+      .map((report) => ({
+        id: report.id,
+        reference: `SRS-${report.id.slice(0, 8).toUpperCase()}`,
+        issueType: report.issueType,
+        location: report.location,
+        description: report.description,
+        latitude: report.latitude,
+        longitude: report.longitude,
+        photoUrl: report.photoUrl || null,
+        createdAt: report.createdAt,
+      }));
+
+    return res.status(200).json({ reports: formatted });
   }
 
   if (req.method !== "POST") {
@@ -129,6 +148,7 @@ export default async function handler(req, res) {
       description,
       latitude: parsedLatitude,
       longitude: parsedLongitude,
+      photoUrl: null,
       createdAt,
     });
 
