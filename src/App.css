@@ -25,6 +25,7 @@ font-family: inherit;
 }
 
 .app {
+width: 100%;
 min-height: 100vh;
 background:
 radial-gradient(circle at 20% 10%, #24145a 0, transparent 30%),
@@ -38,7 +39,7 @@ NAVBAR
 
 .navbar {
 height: 74px;
-padding: 0 7%;
+padding: 0 3.5%;
 display: flex;
 align-items: center;
 justify-content: space-between;
@@ -148,6 +149,7 @@ max-width: 650px;
 .hero-buttons {
 margin-top: 30px;
 display: flex;
+justify-content: center;
 gap: 12px;
 }
 
@@ -244,7 +246,7 @@ GENERAL SECTIONS
 ========================================================= */
 
 .section {
-padding: 110px 8%;
+padding: 90px 3.5%;
 text-align: center;
 }
 
@@ -319,7 +321,7 @@ DASHBOARD
 ========================================================= */
 
 .dashboard-section {
-padding: 110px 8%;
+padding: 90px 3.5%;
 background: #0d1018;
 border-top: 1px solid #202331;
 }
@@ -339,7 +341,7 @@ SAFETY BANNER
 ========================================================= */
 
 .safety-banner {
-max-width: 1150px;
+max-width: 1340px;
 margin: auto;
 padding: 24px 27px;
 border-radius: 17px;
@@ -393,7 +395,7 @@ STAT CARDS
 ========================================================= */
 
 .stats-grid {
-max-width: 1150px;
+max-width: 1340px;
 margin: 20px auto;
 display: grid;
 grid-template-columns: repeat(4, 1fr);
@@ -453,7 +455,7 @@ CONTROL PANEL
 ========================================================= */
 
 .control-panel {
-max-width: 1150px;
+max-width: 1340px;
 margin: 20px auto;
 padding: 28px;
 background: linear-gradient(
@@ -564,7 +566,7 @@ ROAD MONITOR
 ========================================================= */
 
 .road-monitor {
-max-width: 1150px;
+max-width: 1340px;
 margin: 20px auto 0;
 padding: 25px;
 background: linear-gradient(
@@ -832,7 +834,7 @@ FOOTER
 ========================================================= */
 
 footer {
-padding: 60px 8%;
+padding: 60px 5%;
 border-top: 1px solid #202331;
 text-align: center;
 }
