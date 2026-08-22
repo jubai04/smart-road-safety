@@ -81,6 +81,28 @@ app.get("/health", (_request, response) => {
   response.json({ status: "ok" });
 });
 
+app.get("/api/reports", (_request, response) => {
+  const reports = db
+    .prepare(
+      "SELECT id, issue_type, location, description, latitude, longitude, photo_url, created_at FROM reports ORDER BY created_at DESC"
+    )
+    .all();
+
+  const formatted = reports.map((report) => ({
+    id: report.id,
+    reference: `SRS-${report.id.slice(0, 8).toUpperCase()}`,
+    issueType: report.issue_type,
+    location: report.location,
+    description: report.description,
+    latitude: report.latitude,
+    longitude: report.longitude,
+    photoUrl: report.photo_url,
+    createdAt: report.created_at,
+  }));
+
+  response.json({ reports: formatted });
+});
+
 app.post("/api/reports", reportLimiter, upload.single("photo"), (request, response) => {
   const { issueType, location, description, latitude, longitude } = request.body;
 
