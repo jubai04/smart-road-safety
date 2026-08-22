@@ -2,7 +2,13 @@ import { randomUUID } from "node:crypto";
 import Redis from "ioredis";
 import { put } from "@vercel/blob";
 
-const redis = new Redis(process.env.REDIS_URL);
+function getRedis() {
+  return new Redis(process.env.REDIS_URL, {
+    maxRetriesPerRequest: 3,
+    connectTimeout: 5000,
+    lazyConnect: true,
+  });
+}
 
 export const config = {
   api: { bodyParser: false },
@@ -71,7 +77,9 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
+    const redis = getRedis();
     try {
+      await redis.connect();
       const reportIds = await redis.zrange("reports", 0, -1, "REV");
 
       if (reportIds.length === 0) {
@@ -100,6 +108,8 @@ export default async function handler(req, res) {
     } catch (error) {
       console.error("Error fetching reports:", error);
       return res.status(500).json({ message: "Failed to fetch reports." });
+    } finally {
+      redis.quit();
     }
   }
 
@@ -107,7 +117,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Method not allowed." });
   }
 
+  const redis = getRedis();
   try {
+    await redis.connect();
     const contentType = req.headers["content-type"] || "";
     const boundaryMatch = contentType.match(/boundary=(.+)/);
     if (!boundaryMatch) {
@@ -188,5 +200,7 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("Report submission error:", error);
     return res.status(500).json({ message: "The reporting service encountered an error." });
+  } finally {
+    redis.quit();
   }
 }
