@@ -6,7 +6,8 @@ export default async function handler(req, res) {
   try {
     const { data } = req.body;
 
-    const response = await fetch("https://overpass-api.de/api/interpreter", {
+    const overpassUrl = process.env.OVERPASS_API_URL || "https://overpass-api.de/api/interpreter";
+    const response = await fetch(overpassUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

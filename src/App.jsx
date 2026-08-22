@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
 import Navbar from "./components/Navbar";
+import AuthModal from "./components/AuthModal";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
@@ -14,6 +15,7 @@ export default function App() {
     <AppProvider>
       <div className="app">
         <Navbar />
+        <AuthModal />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />

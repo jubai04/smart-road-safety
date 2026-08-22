@@ -325,7 +325,7 @@ export default function Dashboard() {
 
             <TileLayer
               attribution='&copy; OpenStreetMap contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              url={import.meta.env.VITE_TILE_URL || "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
             />
 
             <MapCenter
