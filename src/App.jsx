@@ -3014,7 +3014,7 @@ function App() {
         <div
           style={{
             maxWidth:
-              "1000px",
+              "1340px",
             margin:
               "0 auto 20px",
             padding:
@@ -3987,7 +3987,7 @@ function App() {
         <div
           style={{
             maxWidth:
-              "1000px",
+              "1340px",
             margin:
               "50px auto 0",
           }}
@@ -4153,7 +4153,7 @@ function App() {
         <div
           style={{
             maxWidth:
-              "1000px",
+              "1340px",
             margin:
               "40px auto",
             display:
@@ -4244,7 +4244,7 @@ function App() {
           }`}
           style={{
             maxWidth:
-              "1000px",
+              "1340px",
           }}
         >
 
@@ -4299,10 +4299,10 @@ function App() {
 
         <div
           style={{
-            maxWidth: "1000px",
+            maxWidth: "1340px",
             margin: "45px auto 0",
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
             gap: "18px",
           }}
         >
@@ -4333,7 +4333,7 @@ function App() {
 
         <div
           style={{
-            maxWidth: "850px",
+            maxWidth: "1100px",
             margin: "42px auto 0",
             textAlign: "left",
           }}
@@ -4399,7 +4399,7 @@ function App() {
 
         <div
           style={{
-            maxWidth: "850px",
+            maxWidth: "1100px",
             margin: "28px auto 0",
             padding: "22px 24px",
             borderRadius: "14px",
@@ -4449,7 +4449,7 @@ function App() {
 
         <div
           style={{
-            maxWidth: "900px",
+            maxWidth: "1200px",
             margin: "45px auto 0",
             padding: "clamp(20px, 4vw, 36px)",
             background: "#141822",
