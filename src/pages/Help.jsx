@@ -146,6 +146,29 @@ export default function Help() {
           View my report →
         </Link>
       </div>
+
+      <div
+        style={{
+          maxWidth: "1100px",
+          margin: "48px auto 0",
+          padding: "22px 24px",
+          borderRadius: "14px",
+          background: "#141822",
+          border: "1px solid #292e3c",
+          textAlign: "center",
+        }}
+      >
+        <h3 style={{ marginBottom: "8px", fontSize: "20px" }}>Contact Us</h3>
+        <p style={{ margin: 0, color: "#aeb6c7", fontSize: "15px" }}>
+          {`Rupantar Banerjee — `}
+          <a
+            href="mailto:banerjeerupantar@gmail.com"
+            style={{ color: "#4fd1c5", textDecoration: "none" }}
+          >
+            banerjeerupantar@gmail.com
+          </a>
+        </p>
+      </div>
     </section>
   );
 }
