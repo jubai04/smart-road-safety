@@ -1510,6 +1510,7 @@ export function AppProvider({ children }) {
     complaintPhoto,
     complaintPhotoPreview,
     complaintSubmitted,
+    setComplaintSubmitted,
     complaintSubmitting,
     complaintError,
     reportReference,
