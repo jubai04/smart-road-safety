@@ -113,7 +113,10 @@ export default function Home() {
 
       <div className="solution-grid">
 
-        <div className="solution-card">
+        <Link
+          to="/dashboard#map"
+          className="solution-card"
+        >
 
           <div className="card-icon">
             📡
@@ -131,9 +134,12 @@ export default function Home() {
             road environments.
           </p>
 
-        </div>
+        </Link>
 
-        <div className="solution-card">
+        <Link
+          to="/dashboard#dashboard"
+          className="solution-card"
+        >
 
           <div className="card-icon">
             🧠
@@ -151,9 +157,12 @@ export default function Home() {
             safely.
           </p>
 
-        </div>
+        </Link>
 
-        <div className="solution-card">
+        <Link
+          to="/reports#driver-performance"
+          className="solution-card"
+        >
 
           <div className="card-icon">
             🛡️
@@ -169,7 +178,7 @@ export default function Home() {
             violations reduce it.
           </p>
 
-        </div>
+        </Link>
 
       </div>
 

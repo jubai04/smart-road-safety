@@ -218,9 +218,9 @@ export default function Reports() {
         </div>
       </section>
 
-      <section className="dashboard-section" id="report">
+      <section className="dashboard-section">
         <div className="section-label">MONTHLY SAFETY REPORT</div>
-        <h2>Driver Performance</h2>
+        <h2 id="driver-performance">Driver Performance</h2>
         <p className="dashboard-intro">
           A monthly-style summary of driver behaviour and safety performance.
         </p>
