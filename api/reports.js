@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 import { put } from "@vercel/blob";
+
+const redis = new Redis({ url: process.env.REDIS_URL });
 
 export const config = {
   api: { bodyParser: false },
@@ -70,7 +72,7 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     try {
-      const reportIds = await kv.zrange("reports", 0, -1, { rev: true });
+      const reportIds = await redis.zrange("reports", 0, -1, { rev: true });
 
       if (reportIds.length === 0) {
         return res.status(200).json({ reports: [] });
@@ -78,7 +80,7 @@ export default async function handler(req, res) {
 
       const reports = [];
       for (const id of reportIds) {
-        const report = await kv.hgetall(`report:${id}`);
+        const report = await redis.hgetall(`report:${id}`);
         if (report?.id) {
           reports.push({
             id: report.id,
@@ -166,7 +168,7 @@ export default async function handler(req, res) {
       photoUrl = blob.url;
     }
 
-    await kv.hset(`report:${id}`, {
+    await redis.hset(`report:${id}`, {
       id,
       issueType,
       location,
@@ -177,7 +179,7 @@ export default async function handler(req, res) {
       createdAt,
     });
 
-    await kv.zadd("reports", { score: Date.now(), member: id });
+    await redis.zadd("reports", { score: Date.now(), member: id });
 
     return res.status(201).json({
       reference: `SRS-${id.slice(0, 8).toUpperCase()}`,
