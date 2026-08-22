@@ -490,18 +490,31 @@ export function AppProvider({ children }) {
         out center tags;
       `;
 
-      const response = await fetch(
-        "https://overpass-api.de/api/interpreter",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/x-www-form-urlencoded",
-          },
-          body:
-            "data=" + encodeURIComponent(query),
-        }
-      );
+      const isLocal =
+        window.location.hostname === "localhost";
+      const overpassUrl = isLocal
+        ? "https://overpass-api.de/api/interpreter"
+        : "/api/overpass";
+
+      const fetchOptions = isLocal
+        ? {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/x-www-form-urlencoded",
+            },
+            body:
+              "data=" + encodeURIComponent(query),
+          }
+        : {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ data: query }),
+          };
+
+      const response = await fetch(overpassUrl, fetchOptions);
 
       if (!response.ok) {
         throw new Error("Map data request failed.");
