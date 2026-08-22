@@ -47,7 +47,7 @@ border-bottom: 1px solid #202331;
 background: rgba(9, 11, 18, 0.88);
 position: sticky;
 top: 0;
-z-index: 100;
+z-index: 1100;
 backdrop-filter: blur(18px);
 }
 
